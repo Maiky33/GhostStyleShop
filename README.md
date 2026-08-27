@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GhostStyle
+
+Full-stack e-commerce platform for urban and freestyle clothing.
+
+## Stack
+
+- **Frontend:** Next.js (App Router), React, TypeScript, Tailwind CSS, shadcn/ui
+- **Backend:** Next.js Route Handlers
+- **Database:** PostgreSQL + Prisma ORM
+- **Auth:** JWT (HTTP-only cookies) + bcrypt
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- PostgreSQL 14+
+
+### Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Copy environment variables:
+
+```bash
+cp .env.example .env
+```
+
+3. Update `.env` with your PostgreSQL credentials and JWT secret.
+
+4. Run migrations:
+
+```bash
+npm run db:migrate
+```
+
+5. Seed default roles:
+
+```bash
+npm run db:seed
+```
+
+6. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+src/
+├── app/
+│   ├── (auth)/          # Login, Register
+│   ├── (store)/         # Home, Catalog, Product detail
+│   ├── admin/           # Admin dashboard
+│   └── api/             # API route handlers
+├── components/          # Reusable UI components
+├── lib/                 # Utilities, Prisma client, auth
+├── services/            # Business logic
+├── hooks/               # Custom React hooks
+└── types/               # Shared TypeScript types
+```
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Generate Prisma client and build for production |
+| `npm run db:migrate` | Run Prisma migrations |
+| `npm run db:seed` | Seed default roles (ADMIN, USER) |
+| `npm run db:generate` | Regenerate Prisma client |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See `.env.example` for required variables.
 
-## Deploy on Vercel
+## Development Phases
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Phase 1–2:** Project setup ✅
+2. **Phase 3:** Database migrations
+3. **Phase 4:** Authentication (register, login, relogin, logout)
+4. **Phase 5:** Storefront UI (login, register, home, catalog, product detail)
+5. **Phase 6:** Product & category APIs
+6. **Phase 7:** Admin dashboard & CRUD
