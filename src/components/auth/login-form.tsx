@@ -84,7 +84,7 @@ export function LoginForm() {
         </form>
 
         <p className="mt-6 text-center text-sm text-black">
-          ¿No tienes cuenta?{" "}
+          ¿No tienes una cuenta?{" "}
           <Link
             href="/register"
             className="font-semibold underline underline-offset-2 transition-opacity hover:opacity-70"
