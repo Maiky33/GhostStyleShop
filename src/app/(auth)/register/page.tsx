@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function RegisterPage() {
   return (
-    <AuthCard>
+    <AuthCard wide>
       <RegisterForm />
     </AuthCard>
   );

@@ -1,8 +1,25 @@
+import type { Metadata } from "next";
+import { Suspense } from "react";
+
+import { CatalogView } from "@/components/catalog/catalog-view";
+
+export const metadata: Metadata = {
+  title: "Productos — GhostStyle",
+  description: "Catálogo GhostStyle de ropa urbana y freestyle.",
+};
+
+function CatalogFallback() {
+  return (
+    <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <p className="text-sm text-neutral-500">Cargando catálogo...</p>
+    </section>
+  );
+}
+
 export default function ProductsPage() {
   return (
-    <main className="mx-auto max-w-7xl px-6 py-16">
-      <h1 className="text-3xl font-bold text-zinc-50">Catalog</h1>
-      <p className="mt-2 text-zinc-400">Product listing — pending API integration.</p>
-    </main>
+    <Suspense fallback={<CatalogFallback />}>
+      <CatalogView />
+    </Suspense>
   );
 }

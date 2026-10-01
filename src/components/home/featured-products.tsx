@@ -62,7 +62,7 @@ export function FeaturedProducts() {
 
         <div className="mt-5 flex justify-center">
           <Link
-            href="/products"
+            href="/products?category=hombre"
             className={cn(
               buttonVariants({ variant: "outline" }),
               "h-11 rounded-md border-black px-8 text-xs font-bold uppercase tracking-[0.12em] text-black hover:bg-neutral-50",

@@ -6,6 +6,7 @@ type AuthInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   icon?: React.ReactNode;
   endAction?: React.ReactNode;
+  containerClassName?: string;
 };
 
 export function AuthInput({
@@ -13,13 +14,14 @@ export function AuthInput({
   icon,
   endAction,
   className,
+  containerClassName,
   id,
   ...props
 }: AuthInputProps) {
   const inputId = id ?? label.toLowerCase().replace(/\s+/g, "-");
 
   return (
-    <div className="space-y-2">
+    <div className={cn("space-y-2", containerClassName)}>
       <label
         htmlFor={inputId}
         className="block text-sm font-semibold text-black"

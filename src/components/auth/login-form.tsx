@@ -1,18 +1,53 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 import { AuthInput } from "@/components/auth/auth-input";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { ApiResponse } from "@/types/api";
+import type { AuthUser } from "@/types/auth";
 
 export function LoginForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError(null);
+    setPending(true);
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "");
+    const password = String(formData.get("password") ?? "");
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+
+      const payload = (await response.json()) as ApiResponse<{ user: AuthUser }>;
+
+      if (!payload.success) {
+        setError(payload.message);
+        return;
+      }
+
+      router.push(payload.data.user.role === "ADMIN" ? "/admin" : "/");
+      router.refresh();
+    } catch {
+      setError("No se pudo conectar con el servidor");
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -35,6 +70,7 @@ export function LoginForm() {
             autoComplete="email"
             placeholder="ejemplo@correo.com"
             required
+            disabled={pending}
           />
 
           <div className="space-y-2">
@@ -45,6 +81,7 @@ export function LoginForm() {
               autoComplete="current-password"
               placeholder="Ingresa tu contraseña"
               required
+              disabled={pending}
               endAction={
                 <button
                   type="button"
@@ -72,14 +109,21 @@ export function LoginForm() {
             </div>
           </div>
 
+          {error ? (
+            <p className="text-sm text-red-600" role="alert">
+              {error}
+            </p>
+          ) : null}
+
           <button
             type="submit"
+            disabled={pending}
             className={cn(
               buttonVariants(),
-              "h-12 w-full rounded-lg bg-black text-sm font-bold uppercase tracking-[0.08em] text-white hover:bg-black/90",
+              "h-12 w-full rounded-lg bg-black text-sm font-bold uppercase tracking-[0.08em] text-white hover:bg-black/90 disabled:opacity-60",
             )}
           >
-            Iniciar sesión
+            {pending ? "Ingresando..." : "Iniciar sesión"}
           </button>
         </form>
 
